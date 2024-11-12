@@ -1,12 +1,16 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"github.com/marwan475/LearningGO/internal/env"
+)
 
 func main() {
 
 	// app config
 	cfg := config{
-		addr: ":8080",
+		addr: env.GetString("ADDR", ":8080"),
 	}
 
 	// main app

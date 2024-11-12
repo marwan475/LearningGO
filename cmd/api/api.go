@@ -25,8 +25,12 @@ func (app *application) mount() http.Handler {
 	// http router using chi
 	r := chi.NewRouter()
 
-	// midleware for routter (currently logs requests and responses)
-	r.Use(middleware.Logger)
+	// midleware
+	r.Use(middleware.RequestID) // request id
+	r.Use(middleware.RealIP)    // real ip
+	r.Use(middleware.Recoverer) // recovers from panics
+	r.Use(middleware.Logger)    // logs requests
+	r.Use(middleware.Timeout(60 * time.Second))
 
 	// routes
 	r.Get("/v1/health", app.CheckHealth)
