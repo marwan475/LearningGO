@@ -14,6 +14,9 @@ func main() {
 		config: cfg,
 	}
 
+	// api route handler
+	mux := app.mount()
+
 	// run the server and log any errors
-	log.Fatal(app.run())
+	log.Fatal(app.run(mux))
 }
