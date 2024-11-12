@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/marwan475/LearningGO/internal/data"
 	"github.com/marwan475/LearningGO/internal/env"
 )
 
@@ -13,9 +14,13 @@ func main() {
 		addr: env.GetString("ADDR", ":8080"),
 	}
 
+	// Data base interface
+	datab := data.NewPostgresDB(nil)
+
 	// main app
 	app := &application{
-		config: cfg,
+		config:   cfg,
+		database: datab,
 	}
 
 	// api route handler

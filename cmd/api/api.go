@@ -7,11 +7,13 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/marwan475/LearningGO/internal/data"
 )
 
 // main api
 type application struct {
-	config config
+	config   config
+	database data.Database
 }
 
 // config
