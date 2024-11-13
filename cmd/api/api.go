@@ -19,6 +19,14 @@ type application struct {
 // config
 type config struct {
 	addr string
+	db   dbConfig
+}
+
+type dbConfig struct {
+	addr        string
+	maxCon      int
+	maxIdle     int
+	maxIdletime string
 }
 
 // mount the applications router
