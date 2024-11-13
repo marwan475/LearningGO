@@ -8,6 +8,8 @@ import (
 	"github.com/marwan475/LearningGO/internal/env"
 )
 
+const version = "1.0"
+
 func main() {
 
 	// app config
@@ -19,6 +21,7 @@ func main() {
 			maxIdle:     env.GetInt("DBIDLE", 30),
 			maxIdletime: env.GetString("DBIDLETIME", "15m"),
 		},
+		env: env.GetString("ENV", "development"),
 	}
 
 	database, err := db.New(cfg.db.addr, cfg.db.maxCon, cfg.db.maxIdle, cfg.db.maxIdletime)
