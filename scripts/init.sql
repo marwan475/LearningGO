@@ -1,1 +1,5 @@
+
 CREATE DATABASE testdb;
+\c testdb;
+CREATE EXTENSION IF NOT EXISTS citext;
+
