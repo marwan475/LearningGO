@@ -3,5 +3,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title text NOT NULL,
     userid bigint NOT NULL,
     content text NOT NULL,
-    createtimestamp timestamp(0) with time zone NOT NULL DEFAULT NOW()
+    tags VARCHAR(100) [],
+    createtimestamp timestamp(0) with time zone NOT NULL DEFAULT NOW(),
+    updatetimestamp timestamp(0) with time zone NOT NULL DEFAULT NOW()
 ); 

@@ -6,11 +6,11 @@ import (
 )
 
 type User struct {
-	id              int64  `json: "id"`
-	username        string `json: "username"`
-	email           string `json: "email"`
-	password        string `json: "-"`
-	createtimestamp string `json: "createtimestamp"`
+	Id              int64  `json:"id"`
+	Username        string `json:"username"`
+	Email           string `json:"email"`
+	Password        string `json:"-"`
+	Createtimestamp string `json:"createtimestamp"`
 }
 
 type PostgresUsers struct {
@@ -23,10 +23,10 @@ func (s *PostgresUsers) Create(ctx context.Context, user *User) error {
 		VALUES ($1, $2, $3) RETURNING id, createtimestamp
 	`
 	err := s.db.QueryRowContext(ctx, query,
-		user.username,
-		user.password,
-		user.email,
-	).Scan(&user.id, &user.createtimestamp)
+		user.Username,
+		user.Password,
+		user.Email,
+	).Scan(&user.Id, &user.Createtimestamp)
 
 	return err
 }

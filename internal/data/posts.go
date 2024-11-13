@@ -8,13 +8,13 @@ import (
 )
 
 type Post struct {
-	id              int64    `json:"id"`
-	content         string   `json:"content"`
-	title           string   `json:"title"`
-	userid          int64    `json:"userid"`
-	createtimestamp string   `json:"createtimestamp"`
-	updatetimestap  string   `json:"updatetimestamp"`
-	tags            []string `json:"tags"`
+	Id              int64    `json:"id"`
+	Content         string   `json:"content"`
+	Title           string   `json:"title"`
+	Userid          int64    `json:"userid"`
+	Createtimestamp string   `json:"createtimestamp"`
+	Updatetimestap  string   `json:"updatetimestamp"`
+	Tags            []string `json:"tags"`
 }
 
 type PostgresPosts struct {
@@ -27,11 +27,11 @@ func (s *PostgresPosts) Create(ctx context.Context, post *Post) error {
 		VALUES ($1, $2, $3, $4) RETURNING id, createtimestamp, updatetimestamp
 		`
 	err := s.db.QueryRowContext(ctx, query,
-		post.content,
-		post.title,
-		post.userid,
-		pq.Array(post.tags),
-	).Scan(&post.id, &post.createtimestamp, &post.updatetimestap)
+		post.Content,
+		post.Title,
+		post.Userid,
+		pq.Array(post.Tags),
+	).Scan(&post.Id, &post.Createtimestamp, &post.Updatetimestap)
 
 	return err
 }
