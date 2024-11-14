@@ -14,11 +14,16 @@ type Database struct {
 	Users interface {
 		Create(context.Context, *User) error
 	}
+
+	Comment interface {
+		Get(context.Context, int64) ([]Comment, error)
+	}
 }
 
 func NewPostgresDB(db *sql.DB) Database {
 	return Database{
-		Posts: &PostgresPosts{db},
-		Users: &PostgresUsers{db},
+		Posts:   &PostgresPosts{db},
+		Users:   &PostgresUsers{db},
+		Comment: &PostgresComments{db},
 	}
 }

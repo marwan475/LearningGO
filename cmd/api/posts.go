@@ -77,6 +77,15 @@ func (app *application) GetPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	comments, err := app.database.Comment.Get(ctx, postID)
+
+	if err != nil {
+		app.internalServerError(w, r, err)
+		return
+	}
+
+	post.Comments = comments
+
 	err = writeJSON(w, http.StatusCreated, post)
 
 	if err != nil {

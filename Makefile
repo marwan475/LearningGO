@@ -6,9 +6,11 @@ migrationuser:
 migrationposts:
 	migrate create -seq -ext sql -dir ./cmd/migrate/migrations create_posts
 
-
 migrationalterposts:
 	migrate create -seq -ext sql -dir ./cmd/migrate/migrations alter_posts
+
+migrationcomments:
+	migrate create -seq -ext sql -dir ./cmd/migrate/migrations create_comments
 
 migrateup:
 	migrate -path=./cmd/migrate/migrations -database="postgres://admin:adminpassword@localhost/testdb?sslmode=disable" up
