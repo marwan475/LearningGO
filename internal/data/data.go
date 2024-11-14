@@ -8,6 +8,7 @@ import (
 type Database struct {
 	Posts interface {
 		Create(context.Context, *Post) error
+		Get(context.Context, int64) (*Post, error)
 	}
 
 	Users interface {

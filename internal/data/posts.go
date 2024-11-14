@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"database/sql"
+	"errors"
 
 	"github.com/lib/pq"
 )
@@ -34,4 +35,35 @@ func (s *PostgresPosts) Create(ctx context.Context, post *Post) error {
 	).Scan(&post.Id, &post.Createtimestamp, &post.Updatetimestap)
 
 	return err
+}
+
+func (s *PostgresPosts) Get(ctx context.Context, id int64) (*Post, error) {
+	query := `
+	SELECT id, userid, title, content, createtimestamp, updatetimestamp, tags
+	FROM posts
+	WHERE id = $1
+	`
+
+	var post Post
+
+	err := s.db.QueryRowContext(ctx, query, id).Scan(
+		&post.Id,
+		&post.Userid,
+		&post.Title,
+		&post.Createtimestamp,
+		&post.Updatetimestap,
+		&post.Tags,
+	)
+
+	if err != nil {
+		switch {
+		case errors.Is(err, sql.ErrNoRows):
+			return nil, errors.New("record not found")
+		default:
+			return nil, err
+		}
+	}
+
+	return &post, nil
+
 }
