@@ -9,8 +9,8 @@ import (
 )
 
 type PostPayload struct {
-	Title   string   `json:"title"`
-	Content string   `json:"content"`
+	Title   string   `json:"title" validate:"required,max=100"`
+	Content string   `json:"content" validate:"required,max=1000"`
 	Tags    []string `json:"tags"`
 }
 
@@ -21,7 +21,14 @@ func (app *application) CreatePost(w http.ResponseWriter, r *http.Request) {
 	err := readJSON(w, r, &postpayload)
 
 	if err != nil {
-		writeJSONerror(w, http.StatusBadRequest, err.Error())
+		app.BadRequestError(w, r, err)
+		return
+	}
+
+	err = Validate.Struct(postpayload)
+
+	if err != nil {
+		app.BadRequestError(w, r, err)
 		return
 	}
 
@@ -39,14 +46,14 @@ func (app *application) CreatePost(w http.ResponseWriter, r *http.Request) {
 	err = app.database.Posts.Create(ctx, post)
 
 	if err != nil {
-		writeJSONerror(w, http.StatusInternalServerError, err.Error())
+		app.internalServerError(w, r, err)
 		return
 	}
 
 	err = writeJSON(w, http.StatusCreated, post)
 
 	if err != nil {
-		writeJSONerror(w, http.StatusInternalServerError, err.Error())
+		app.internalServerError(w, r, err)
 		return
 	}
 }
@@ -57,7 +64,7 @@ func (app *application) GetPost(w http.ResponseWriter, r *http.Request) {
 	postID, err := strconv.ParseInt(idparam, 10, 64)
 
 	if err != nil {
-		writeJSONerror(w, http.StatusInternalServerError, err.Error())
+		app.internalServerError(w, r, err)
 		return
 	}
 
@@ -66,14 +73,14 @@ func (app *application) GetPost(w http.ResponseWriter, r *http.Request) {
 	post, err := app.database.Posts.Get(ctx, postID)
 
 	if err != nil {
-		writeJSONerror(w, http.StatusNotFound, err.Error())
+		app.NotFoundError(w, r, err)
 		return
 	}
 
 	err = writeJSON(w, http.StatusCreated, post)
 
 	if err != nil {
-		writeJSONerror(w, http.StatusInternalServerError, err.Error())
+		app.internalServerError(w, r, err)
 		return
 	}
 }
