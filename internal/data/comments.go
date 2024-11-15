@@ -36,8 +36,7 @@ func (s *PostgresComments) Create(ctx context.Context, comment *Comment) error {
 
 func (s *PostgresComments) Get(ctx context.Context, id int64) ([]Comment, error) {
 	query := `
-		SELECT c.postid, c.userid, c.content, c.createtimestamp, users.username, users.id FROM comments c
-		JOIN users on users.id = c.userid
+		SELECT c.postid, c.userid, c.content, c.createtimestamp FROM comments c
 		WHERE c.postid = $1
 		ORDER BY c.createtimestamp DESC;
 	`
@@ -54,7 +53,7 @@ func (s *PostgresComments) Get(ctx context.Context, id int64) ([]Comment, error)
 	for rows.Next() {
 		var c Comment
 		c.User = User{}
-		err := rows.Scan(&c.Id, &c.Postid, &c.Userid, &c.Content, &c.Createtimestamp, &c.User.Username, &c.User.Id)
+		err := rows.Scan(&c.Postid, &c.Userid, &c.Content, &c.Createtimestamp)
 		if err != nil {
 			return nil, err
 		}

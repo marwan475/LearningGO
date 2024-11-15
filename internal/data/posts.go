@@ -40,7 +40,7 @@ func (s *PostgresPosts) Create(ctx context.Context, post *Post) error {
 
 func (s *PostgresPosts) Get(ctx context.Context, id int64) (*Post, error) {
 	query := `
-	SELECT id, userid, title, content, createtimestamp, updatetimestamp, tags
+	SELECT id, userid, title, content, createtimestamp, updatetimestamp
 	FROM posts
 	WHERE id = $1
 	`
@@ -51,9 +51,9 @@ func (s *PostgresPosts) Get(ctx context.Context, id int64) (*Post, error) {
 		&post.Id,
 		&post.Userid,
 		&post.Title,
+		&post.Content,
 		&post.Createtimestamp,
 		&post.Updatetimestap,
-		&post.Tags,
 	)
 
 	if err != nil {
