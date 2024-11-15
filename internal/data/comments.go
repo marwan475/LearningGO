@@ -18,6 +18,22 @@ type PostgresComments struct {
 	db *sql.DB
 }
 
+func (s *PostgresComments) Create(ctx context.Context, comment *Comment) error {
+	query := `
+		INSERT INTO comments (postid, userid, content)
+		VALUES ($1, $2, $3)
+		`
+
+	err := s.db.QueryRowContext(ctx, query,
+		comment.Postid,
+		comment.Userid,
+		comment.Content,
+	).Err()
+
+	return err
+
+}
+
 func (s *PostgresComments) Get(ctx context.Context, id int64) ([]Comment, error) {
 	query := `
 		SELECT c.postid, c.userid, c.content, c.createtimestamp, users.username, users.id FROM comments c

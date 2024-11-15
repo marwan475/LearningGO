@@ -9,6 +9,8 @@ type Database struct {
 	Posts interface {
 		Create(context.Context, *Post) error
 		Get(context.Context, int64) (*Post, error)
+		Delete(context.Context, int64) error
+		Update(context.Context, int64, string, string) error
 	}
 
 	Users interface {
@@ -16,6 +18,7 @@ type Database struct {
 	}
 
 	Comment interface {
+		Create(context.Context, *Comment) error
 		Get(context.Context, int64) ([]Comment, error)
 	}
 }

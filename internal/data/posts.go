@@ -68,3 +68,52 @@ func (s *PostgresPosts) Get(ctx context.Context, id int64) (*Post, error) {
 	return &post, nil
 
 }
+
+func (s *PostgresPosts) Delete(ctx context.Context, id int64) error {
+	query := `DELETE FROM posts WHERE id = $1`
+
+	res, err := s.db.ExecContext(ctx, query, id)
+
+	if err != nil {
+		return err
+	}
+
+	rows, err := res.RowsAffected()
+
+	if err != nil {
+		return err
+	}
+
+	if rows == 0 {
+		return errors.New("not found")
+	}
+
+	return nil
+}
+
+func (s *PostgresPosts) Update(ctx context.Context, id int64, title string, content string) error {
+
+	query := `
+		UPDATE posts
+		SET title = $1, content = $2
+		WHERE id = $3
+	`
+	res, err := s.db.ExecContext(ctx, query, title, content, id)
+
+	if err != nil {
+		return err
+	}
+
+	rows, err := res.RowsAffected()
+
+	if err != nil {
+		return err
+	}
+
+	if rows == 0 {
+		return errors.New("not found")
+	}
+
+	return nil
+
+}
